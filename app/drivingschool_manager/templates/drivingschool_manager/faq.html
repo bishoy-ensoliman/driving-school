@@ -1,0 +1,44 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+
+{% block content %}
+
+<div id="contact" class="faq-section">
+    <h1 style="margin-bottom: 2rem;"><strong style="color: #777;">Hier findet ihr Antworten auf viele Fragen</strong></h1>
+    <div style="margin-bottom: 2rem;">
+        <h1><strong style="color: #7cfc00;">Was ist mit Corona?</strong></h1>
+        <h1><strong>Wenn möglich, git es bei uns keine Corona Regeln. Alles ist freiwillig.</strong></h1>
+    </div>
+    <div style="margin-bottom: 2rem;">
+        <h1><strong style="color: #7cfc00;">Ab welchem Alter kann ich den Führerschein machen?</strong></h1>
+        <h1><strong>Ab 16 Jahren</strong></h1>
+    </div>
+    <div style="margin-bottom: 2rem;">
+        <h1><strong style="color: #7cfc00;">Wo finde ich die Fahrschule?</strong></h1>
+        <h1><strong>Mit der S-4 bis Fürstenfeldbruck. Von dort 5 Minuten Gehweg bis zur Fahrschule.
+            Münchner Str.65, 82256 Fürstenfeldbruck</strong></h1>
+        <br/>
+        <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2660.7136877381417!2d11.263075315749571!3d48.173599156630154!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x479e7f3f7e827d55%3A0xec37c0db0f7dd73!2sFahrschule%20Gruhn!5e0!3m2!1sen!2sde!4v1650231320484!5m2!1sen!2sde"
+                width="400" height="350" style="border:0;" allowfullscreen=""
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <div style="margin-bottom: 2rem;">
+        <h1><strong style="color: #7cfc00;">Wie sind die Öffnungszeiten?</strong></h1>
+        <h1><strong>Nach Terminabsprache.</strong></h1>
+    </div>
+    <div style="margin-bottom: 2rem;">
+        <h1><strong style="color: #7cfc00;">Welche Sprachen werden gesprochen?</strong></h1>
+        <h1><strong>Deutsch, English, Arabisch</strong></h1>
+    </div>
+    <div style="margin-bottom: 2rem;">
+        <h1><strong style="color: #7cfc00;">Wie stellt sich die Abfahrtskontrolle dar?</strong></h1>
+        <video width="400" controls>
+            <source src="{% static 'drivingschool_manager/videos/home-video.mp4' %}" type="video/mp4">
+            Your browser does not support HTML video.
+          </video>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,65 @@
+.footer {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+.navbar, .footer {
+    background-color: rgba(200, 200, 200, .9);
+}
+
+.main{
+    margin-top: 5rem;
+    min-height: 78vh;
+}
+
+.navbar {
+    top: 0;
+    position: fixed;
+    width: 100%;
+}
+
+.description {
+    width: 45%;
+    flex-direction: column;
+    padding-left: 1rem;
+}
+
+.video {
+    width: 50%;
+}
+
+.fifty-percent-centered {
+    margin: 0 auto;
+    width: 50%;
+}
+
+.sixty-percent-centered {
+    margin: 0 auto;
+    width: 60%;
+}
+
+.fit-content-centered {
+    margin: 0 auto;
+    width: fit-content;
+}
+
+.message-view {
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 35ch;
+}
+
+.message-text {
+    text-overflow: ellipsis;
+}
+
+.js-modal-trigger {
+    cursor: pointer;
+}
+
+.logo {
+    background-image: url("/static/drivingschool_manager/images/gruhn-logo.jpeg") 50% 0 no-repeat fixed;
+    height: 550px;
+    width: 680px;
+}

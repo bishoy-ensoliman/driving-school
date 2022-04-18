@@ -1,0 +1,282 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+
+{% block content %}
+{% if user.is_authenticated %}
+
+
+<script>
+
+    function clientsTabClicked() {
+        localStorage.setItem('manage-active-tab', 'clients');
+        document.getElementById("clientsbutton").className = "is-active";
+        document.getElementById("settingsbutton").className = "";
+        document.getElementById("clients").style = "display:block;";
+        document.getElementById("settings").style = "display:none;";
+    }
+
+    function settingsTabClicked() {
+        localStorage.setItem('manage-active-tab', 'settings');
+        document.getElementById("clientsbutton").className = "";
+        document.getElementById("settingsbutton").className = "is-active";
+        document.getElementById("clients").style = "display:none;";
+        document.getElementById("settings").style = "display:block;";
+    }
+
+    function setActiveTabFromStorage() {
+        let activeTab = localStorage.getItem('manage-active-tab');
+        if (activeTab === 'clients') {
+            clientsTabClicked();
+        } else if (activeTab === 'settings') {
+            settingsTabClicked();
+        }
+    }
+
+    function passwordViewToggle() {
+        let toggleButton = document.getElementById("passwordtoggle");
+        toggleButton.classList.toggle("fa-eye-slash");
+        toggleButton.classList.toggle("fa-eye");
+        let passwordInput = document.getElementById("systempassword");
+        if (passwordInput.getAttribute("type") == "password") {
+            passwordInput.setAttribute("type", "text");
+        } else {
+            passwordInput.setAttribute("type", "password");
+        }
+    }
+
+    function onloadScripts() {
+        setActiveTabFromStorage();
+        document.getElementById('selectBy').value = '{{search.field}}';
+    }
+
+    window.onload = onloadScripts;
+
+    function setClientMessageInModal(message) {
+        document.getElementById('modal-message-content').innerHTML = message;
+    }
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Functions to open and close a modal
+        function openModal($el) {
+            $el.classList.add('is-active');
+        }
+
+        function closeModal($el) {
+            $el.classList.remove('is-active');
+        }
+
+        function closeAllModals() {
+            (document.querySelectorAll('.modal') || []).forEach(($modal) => {
+                closeModal($modal);
+            });
+        }
+
+        // Add a click event on buttons to open a specific modal
+        (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+            const modal = $trigger.dataset.target;
+            const $target = document.getElementById(modal);
+            console.log($target);
+
+            $trigger.addEventListener('click', () => {
+                openModal($target);
+            });
+        });
+
+        // Add a click event on various child elements to close the parent modal
+        (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+            const $target = $close.closest('.modal');
+
+            $close.addEventListener('click', () => {
+                closeModal($target);
+            });
+        });
+
+        // Add a keyboard event to close all modals
+        document.addEventListener('keydown', (event) => {
+            const e = event || window.event;
+
+            if (e.keyCode === 27) { // Escape key
+                closeAllModals();
+            }
+        });
+    });
+
+
+    function searchValues() {
+        let searchBy = document.getElementById("selectBy").value;
+        let searchValue = document.getElementById("searchValue").value;
+        location.href = location.origin + location.pathname + '?search-by=' + searchBy + '&search-value=' + searchValue;
+        return false;
+    }
+
+    function searchFieldKeyUp(e) {
+        if (e.keyCode === 13) {
+            searchValues();
+        }
+    }
+</script>
+
+<div id="client-message-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Nachricht</p>
+            <button class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+            <span id="modal-message-content"></span>
+        </section>
+        <footer class="modal-card-foot">
+            <button class="button">schließen</button>
+        </footer>
+    </div>
+</div>
+
+<div class="section" style="margin: auto;">
+    <div class="box">
+        <div class="tabs is-boxed">
+            <ul>
+                <li id="clientsbutton" class="is-active" onclick="clientsTabClicked()">
+                    <a>
+                        <span class="icon is-small"><i class="fas fa-user" aria-hidden="true"></i></span>
+                        <span>Clients</span>
+                    </a>
+                </li>
+                <li id="settingsbutton" onclick="settingsTabClicked()" style="display: none;">
+                    <a>
+                        <span class="icon is-small"><i class="fas fa-gear" aria-hidden="true"></i></span>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div id="clients">
+            <div class="field has-addons has-addons-centered">
+                <p class="control">
+                    <span class="select">
+                        <select id="selectBy">
+                            <option value="name">Name</option>
+                            <option value="email">Email</option>
+                            <option value="phone">Tel.</option>
+                        </select>
+                    </span>
+                </p>
+                <p class="control">
+                    <input id="searchValue" class="input" type="text" value="{{search.value}}"
+                        onkeyup="searchFieldKeyUp(event)">
+                </p>
+                <p class="control">
+                    <a class="button is-info" onclick="searchValues()">
+                        Suche
+                    </a>
+                </p>
+            </div>
+            <div class="table-container">
+                <table class="table is-hoverable is-fullwidth is-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Tel.</th>
+                            <th>Nachricht Datum</th>
+                            <th>Nachricht</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for client in clients_page %}
+                        <tr class="js-modal-trigger" data-target="client-message-modal"
+                            onclick="setClientMessageInModal('{{client.message}}')">
+                            <td>{{client.name}}</td>
+                            <td>{{client.email}}</td>
+                            <td>{{client.telephone}}</td>
+                            <td>{{client.message_date}}</td>
+                            <td class="message-view">
+                                <span class="message-text">{{client.message}}</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <nav class="pagination is-centered is-rounded" role="navigation" aria-label="pagination">
+                {% if clients_page.has_previous %}
+                <a class="pagination-previous" href="?page={{ clients_page.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <ul class="pagination-list">
+                    {% if clients_page.has_previous %}
+                    <li><a class="pagination-link" href="?page=1">1</a></li>
+                    <li><span class="pagination-ellipsis">&hellip;</span></li>
+                    {% endif %}
+                    <li><a class="pagination-link is-current">{{ clients_page.number }}</a></li>
+                    {% if clients_page.has_next %}
+                    <li><span class="pagination-ellipsis">&hellip;</span></li>
+                    <a class="pagination-link"
+                        href="?page={{ clients_page.paginator.num_pages }}">{{clients_page.paginator.num_pages}}</a>
+                    {% endif %}
+                </ul>
+
+                {% if clients_page.has_next %}
+                <a class="pagination-next" href="?page={{ clients_page.next_page_number }}">next</a>
+                {% endif %}
+
+
+            </nav>
+        </div>
+        <div id="settings" style="display: none;">
+            <form action="{% url 'change_system_details' %}" method="post">
+                {% csrf_token %}
+                <div class="box fifty-percent-centered">
+                    <div class="field">
+                        <label class="label">System Email</label>
+                        <div class="control has-icons-left">
+                            {% if system_details %}
+                            <input class="input" type="email" name="systememail" autofocus="" required=""
+                                value="{{system_details.email}}">
+                            {% else %}
+                            <input class="input" type="email" name="systememail" autofocus="" required="">
+                            {% endif %}
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-user"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">System Email Passwort</label>
+                        <div class="control has-icons-left has-icons-right">
+                            {% if system_details %}
+                            <input id="systempassword" class="input" type="password" name="systempassword" required=""
+                                value="{{system_details.password}}">
+                            {% else %}
+                            <input id="systempassword" class="input" type="password" name="systempassword" required="">
+                            {% endif %}
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                            <span class="icon is-small is-right" onclick="passwordViewToggle()"
+                                style="pointer-events: all;color: #4a4a4a;">
+                                <i id="passwordtoggle" class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <p class="control">
+                            <button class="button is-success" type="submit">
+                                speichern
+                            </button>
+                        </p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+{% else %}
+<p>Bitte anmelden für diese Setie zu Sehen.</p>
+{% endif %}
+
+{% endblock %}

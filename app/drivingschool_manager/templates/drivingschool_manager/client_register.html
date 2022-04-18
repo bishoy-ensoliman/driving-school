@@ -1,0 +1,107 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="form-section">
+    <form action="{% url 'register_client' %}" method="post">
+        {% csrf_token %}
+
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">Name <span style="color: red;">*</span></label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <p class="control is-expanded has-icons-left">
+                        <input name="name" class="input" type="text" placeholder="Name" required>
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-user"></i>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">Email <span style="color: red;">*</span></label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <p class="control is-expanded has-icons-left">
+                        <input name="email" class="input" type="email" placeholder="Email" required>
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">Telefon</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <p class="control is-expanded has-icons-left">
+                        <input name="phone" class="input" type="tel" placeholder="Telefon">
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-phone"></i>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">Nachricht <span style="color: red;">*</span></label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <textarea name="message" class="textarea" maxlength="4000"
+                            placeholder="Bitte erläutern Sie, wie wir Ihnen helfen können" required></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <label class="checkbox">
+                            <input type="checkbox" required>
+                            Ich habe die <a href="/datenschutzerklaerung">Datenschutzerklärung</a> zur Kenntnis
+                            genommen und akzeptiert. Ich stimme zu, dass meine Formularangaben zur
+                            Kontaktaufnahme bzw. zur Bearbeitung meines Anliegens gespeichert werden.
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <button class="button is-primary" type="submit">
+                            Senden
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+{% endblock %}

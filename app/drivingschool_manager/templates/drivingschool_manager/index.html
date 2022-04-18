@@ -1,0 +1,13 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+
+{% block content %}
+<div style="text-align: center;">
+  <video class="video" controls>
+    <source src="{% static 'drivingschool_manager/videos/home-video.mp4' %}" type="video/mp4">
+    Your browser does not support HTML video.
+  </video>
+</div>
+
+{% endblock %}
